@@ -1,6 +1,6 @@
 # SENAITE Docker
 <p align="left">
-  <img src="readme/senaite_logo.png" width="200" title="Odoo">
+  <img src="readme/senaite_logo.png" width="200" title="SENAITE">
   <img src="readme/plus.png" width="50" title="Docker">
   <img src="readme/docker_logo.png" width="100" title="Docker">
 </p>
