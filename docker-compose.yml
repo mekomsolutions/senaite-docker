@@ -1,0 +1,11 @@
+version: '3'
+services:
+  senaite:
+      build:
+        context: ./
+      environment:
+        - SITE=senaite
+        - ADMIN_USER=admin
+        - ADMIN_PASSWORD=password
+      ports:
+      - "8080:8080"
