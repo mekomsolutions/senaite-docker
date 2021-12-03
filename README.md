@@ -7,6 +7,9 @@
 
 Resources to build custom Docker image for SENAITE
 
+Image is available on Docker Hub at
+[mekomsolutions/senaite](https://hub.docker.com/r/mekomsolutions/openmrs/tags)
+
 ## Run the project
 
 ```
