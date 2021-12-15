@@ -47,7 +47,7 @@ COPY resources/requirements.txt resources/versions.cfg resources/buildout.cfg re
 
 RUN chown -R senaite:senaite $SENAITE_INSTANCE_HOME $SENAITE_FILESTORAGE $SENAITE_BLOBSTORAGE
 
-RUN git clone  https://github.com/enyachoke/plone.initializer.git $SENAITE_INSTANCE_HOME/src/plone.initializer && cd $SENAITE_INSTANCE_HOME/src/plone.initializer && git checkout sitename
+RUN git clone  https://github.com/mekomsolutions/plone.initializer.git $SENAITE_INSTANCE_HOME/src/plone.initializer && cd $SENAITE_INSTANCE_HOME/src/plone.initializer && git checkout main
 
 # Buildout
 RUN pip install -r requirements.txt \
