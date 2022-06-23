@@ -49,6 +49,7 @@ RUN chown -R senaite:senaite $SENAITE_INSTANCE_HOME $SENAITE_FILESTORAGE $SENAIT
 
 RUN git clone  https://github.com/mekomsolutions/plone.initializer.git $SENAITE_INSTANCE_HOME/src/plone.initializer && cd $SENAITE_INSTANCE_HOME/src/plone.initializer && git checkout main
 RUN git clone  https://github.com/mekomsolutions/senaite.indexer.git $SENAITE_INSTANCE_HOME/src/senaite.indexer && cd $SENAITE_INSTANCE_HOME/src/senaite.indexer && git checkout main
+RUN git clone  https://github.com/mekomsolutions/senaite.monkeypatches.git $SENAITE_INSTANCE_HOME/src/senaite.monkeypatches && cd $SENAITE_INSTANCE_HOME/src/senaite.monkeypatches && git checkout main
 
 # Buildout
 RUN pip install -r requirements.txt \
