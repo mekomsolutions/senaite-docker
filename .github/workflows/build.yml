@@ -3,8 +3,6 @@ name: CI
 on:
   push:
     branches: [ main ]
-  pull_request:
-    branches: [ main ]
   workflow_dispatch:
 
 jobs:
@@ -23,10 +21,23 @@ jobs:
       -
         name: Login to DockerHub
         if: github.ref == 'refs/heads/main'
-        uses: docker/login-action@v1 
+        uses: docker/login-action@v2
         with:
           username: mekomsolutions
           password: ${{ secrets.DOCKER_HUB_REGISTRY_PASSWORD }}
+      -
+        name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v4
+        
+        with:
+          images: |
+            mekomsolutions/senaite
+          tags: |
+            type=raw,value=latest,enable={{is_default_branch}}
+            type=pep440,pattern={{version}}
+            type=pep440,pattern={{major}}.{{minor}}
+            type=sha
       - 
         name: Get commit id
         id: vars
@@ -38,5 +49,5 @@ jobs:
           SERVICE: senaite
         with:
           platforms: linux/amd64,linux/arm64
-          push: ${{ github.ref == 'refs/heads/main' }}
-          tags: mekomsolutions/${{ env.SERVICE }}:latest,mekomsolutions/${{ env.SERVICE }}:${{ steps.vars.outputs.sha_short }}
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
