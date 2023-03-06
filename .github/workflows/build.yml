@@ -32,7 +32,7 @@ jobs:
         
         with:
           images: |
-            ${{ secrets.DOCKER_HUB_REGISTRY_USERNAME }}/eip-client
+            mekomsolutions/senaite
           tags: |
             type=raw,value=latest,enable={{is_default_branch}}
             type=pep440,pattern={{version}}
