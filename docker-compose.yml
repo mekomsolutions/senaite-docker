@@ -1,14 +1,25 @@
 version: '3'
 services:
   senaite:
-      build:
-        context: ./
-      environment:
-        - SITE=senaite
-        - ADMIN_USER=admin
-        - ADMIN_PASSWORD=password
-      ports:
+    build:
+      context: ./
+    environment:
+      - SITE=senaite
+      - ADMIN_USER=admin
+      - ADMIN_PASSWORD=password
+      - SMTP_HOST=mail
+      - SMTP_PORT=2500
+      - SMTP_USERNAME=username
+      - SMTP_PASSWORD=password
+      - SMTP_SENDER_NAME=Example Sender
+      - SMTP_SENDER_EMAIL=noreply@example.com
+    ports:
       - "8080:8080"
 
-      volumes:
+    volumes:
       - ./data:/data/importdata/senaite
+  mail:
+    container_name: inbucket
+    image: inbucket/inbucket:latest
+    ports:
+      - "9000:9000"
