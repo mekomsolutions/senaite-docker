@@ -1,5 +1,5 @@
 # Use an official Python runtime as a parent image
-FROM python:2.7-stretch
+FROM python:2.7-buster
 
 # Set one or more individual labels
 LABEL maintainer="Mekom Solutions"
@@ -63,7 +63,8 @@ VOLUME /data
 
 # Copy startup scripts
 COPY resources/docker-initialize.py resources/docker-entrypoint.sh /
-
+COPY scripts /scripts
+RUN chown -R senaite:senaite /docker-entrypoint.sh /docker-initialize.py /scripts
 # Expose instance port
 EXPOSE 8080
 

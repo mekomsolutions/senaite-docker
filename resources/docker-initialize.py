@@ -241,6 +241,7 @@ zcml += {zcml}
 enabled = {enabled}
 site-id = {site}
 profiles += {profiles}
+post-extras = /scripts/stmp-setup.py
 
 [versions]
 {versions}
