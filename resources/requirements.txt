@@ -1,4 +1,1 @@
-setuptools==42.0.2
-zc.buildout==2.13.3
-wheel
-pyphen==0.10.0
+-r https://dist.plone.org/release/5.2.14/requirements.txt
