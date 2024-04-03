@@ -3,6 +3,7 @@ services:
   senaite:
       build:
         context: ./
+      image: mekomsolutions/senaite:latest
       environment:
         - SITE=senaite
         - ADMIN_USER=admin

@@ -59,9 +59,9 @@ RUN cd $SENAITE_INSTANCE_HOME \
   && ln -s $SENAITE_BLOBSTORAGE/ var/blobstorage \
   && chown -R senaite:senaite $SENAITE_HOME $SENAITE_DATA \
   # Cleanup
-  && apt-get purge -y --auto-remove $(grep -vE "^\s*#" /build_deps.txt  | tr "\n" " ") \
-  && rm -rf /$SENAITE_HOME/buildout-cache \
-  && rm -rf /var/lib/apt/lists/*
+  && apt-get purge -y --auto-remove $(grep -vE "^\s*#" /build_deps.txt  | tr "\n" " ") 
+
+RUN  apt-get install -y --no-install-recommends $(grep -vE "^\s*#" /run_deps.txt | tr "\n" " ")
 
 # Change working directory
 WORKDIR $SENAITE_INSTANCE_HOME
