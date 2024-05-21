@@ -13,5 +13,5 @@ jobs:
       download-artifacts: false
       image-name: "senaite"
     secrets:
-      DOCKER_HUB_USERNAME: mekomsolutions
+      DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_REGISTRY_USERNAME }}
       DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_REGISTRY_PASSWORD }}
