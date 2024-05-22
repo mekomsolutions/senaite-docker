@@ -12,6 +12,7 @@ jobs:
     with:
       download-artifacts: false
       image-name: "senaite"
+      image-version: "dev"
     secrets:
       DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_REGISTRY_USERNAME }}
       DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_REGISTRY_PASSWORD }}
