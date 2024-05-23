@@ -8,7 +8,7 @@ on:
 
 jobs:
   docker-release:
-    uses: mekomsolutions/shared-github-workflow/.github/workflows/docker-build-publish.yml@main
+    uses: mekomsolutions/shared-github-workflow/.github/workflows/docker-build-publish.yml@OZ-502-dev
     with:
       download-artifacts: false
       image-name: "senaite"
