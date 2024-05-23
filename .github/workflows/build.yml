@@ -3,16 +3,18 @@ name: CI
 on:
   push:
     branches: [main]
+  pull_request:
+    branches: [main]
   release:
     types: [published]
 
 jobs:
   docker-release:
-    uses: mekomsolutions/shared-github-workflow/.github/workflows/docker-build-publish.yml@main
+    uses: mekomsolutions/shared-github-workflow/.github/workflows/docker-build-publish.yml@OZ-502-dev
     with:
       download-artifacts: false
       image-name: "senaite"
-      image-version: "dev"
+      # image-version: "dev"
     secrets:
       DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_REGISTRY_USERNAME }}
       DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_REGISTRY_PASSWORD }}
