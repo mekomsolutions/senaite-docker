@@ -34,7 +34,7 @@ COPY resources/build_deps.txt resources/run_deps.txt resources/docker-initialize
 
 # Note: we concatenate all commands to avoid multiple layer generation and reduce the image size
 RUN apt-get update \
-  # Install system pakages
+  # Install system packages
   && apt-get install -y --no-install-recommends $(grep -vE "^\s*#" /build_deps.txt | tr "\n" " ") \
   && apt-get install -y --no-install-recommends $(grep -vE "^\s*#" /run_deps.txt | tr "\n" " ") \
   # Fetch unified installer
@@ -50,8 +50,8 @@ RUN apt-get update \
   && cd $SENAITE_INSTANCE_HOME/src/senaite.indexer && git checkout main \
   && git clone  https://github.com/mekomsolutions/senaite.monkeypatches.git $SENAITE_INSTANCE_HOME/src/senaite.monkeypatches\ 
   && cd $SENAITE_INSTANCE_HOME/src/senaite.monkeypatches && git checkout main
-# Buildout
 
+# Buildout
 RUN cd $SENAITE_INSTANCE_HOME \
   && pip install -r requirements.txt \
   && buildout -c develop.cfg \
@@ -59,7 +59,9 @@ RUN cd $SENAITE_INSTANCE_HOME \
   && ln -s $SENAITE_BLOBSTORAGE/ var/blobstorage \
   && chown -R senaite:senaite $SENAITE_HOME $SENAITE_DATA \
   # Cleanup
-  && apt-get purge -y --auto-remove $(grep -vE "^\s*#" /build_deps.txt  | tr "\n" " ") 
+  && apt-get purge -y --auto-remove $(grep -vE "^\s*#" /build_deps.txt  | tr "\n" " ") \
+  && rm -rf /$SENAITE_HOME/buildout-cache \
+  && rm -rf /var/lib/apt/lists/*
 
 RUN  apt-get install -y --no-install-recommends $(grep -vE "^\s*#" /run_deps.txt | tr "\n" " ")
 
