@@ -13,6 +13,21 @@ find /home/senaite -not -user senaite -exec chown senaite:senaite {} \+
 # Initializing from environment variables
 gosu senaite python /docker-initialize.py
 
+function git_fixture {
+  for d in `find /home/senaite/senaitelims/src -mindepth 1 -maxdepth 1 -type d`
+  do
+    if [ -d "$d/.git" ]; then
+      git config --global --add safe.directory $d
+      echo "git config --global --add safe.directory $d"
+    fi
+  done
+}
+
+# Fix mr.developer: fatal: detected dubious ownership in repository at ...
+# https://github.com/actions/runner-images/issues/6775
+# https://github.com/senaite/senaite.docker/issues/17
+git_fixture
+
 if [ -e "custom.cfg" ]; then
     buildout -c custom.cfg
     find /data  -not -user senaite -exec chown senaite:senaite {} \+
