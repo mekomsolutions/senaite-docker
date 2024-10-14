@@ -4,13 +4,13 @@ FROM python:2.7-slim-buster
 # Set one or more individual labels
 LABEL maintainer="Mekom Solutions"
 LABEL email="info@mekomsolutions.com"
-LABEL senaite.core.version="v2.3.0"
+LABEL senaite.core.version="v2.5.0"
 
 # Set environment variables
 ENV PLONE_MAJOR=5.2 \
-  PLONE_VERSION=5.2.9 \
-  PLONE_MD5=fe4bac71688e9704a21f7877680f1374 \
-  PLONE_UNIFIED_INSTALLER=Plone-5.2.9-UnifiedInstaller-1.0 \
+  PLONE_VERSION=5.2.14 \
+  PLONE_MD5=e8e1f774f069026319be3038631e0734 \
+  PLONE_UNIFIED_INSTALLER=Plone-5.2.14-UnifiedInstaller-1.0 \
   SENAITE_HOME=/home/senaite \
   SENAITE_USER=senaite \
   SENAITE_INSTANCE_HOME=/home/senaite/senaitelims \
@@ -34,7 +34,7 @@ COPY resources/build_deps.txt resources/run_deps.txt resources/docker-initialize
 
 # Note: we concatenate all commands to avoid multiple layer generation and reduce the image size
 RUN apt-get update \
-  # Install system pakages
+  # Install system packages
   && apt-get install -y --no-install-recommends $(grep -vE "^\s*#" /build_deps.txt | tr "\n" " ") \
   && apt-get install -y --no-install-recommends $(grep -vE "^\s*#" /run_deps.txt | tr "\n" " ") \
   # Fetch unified installer
@@ -48,20 +48,20 @@ RUN apt-get update \
   && cd $SENAITE_INSTANCE_HOME/src/plone.initializer && git checkout main \
   && git clone  https://github.com/mekomsolutions/senaite.indexer.git $SENAITE_INSTANCE_HOME/src/senaite.indexer \
   && cd $SENAITE_INSTANCE_HOME/src/senaite.indexer && git checkout main \
-  && git clone  https://github.com/mekomsolutions/senaite.monkeypatches.git $SENAITE_INSTANCE_HOME/src/senaite.monkeypatches\ 
+  && git clone  https://github.com/mekomsolutions/senaite.monkeypatches.git $SENAITE_INSTANCE_HOME/src/senaite.monkeypatches\
   && cd $SENAITE_INSTANCE_HOME/src/senaite.monkeypatches && git checkout main
-# Buildout
 
+# Buildout
 RUN cd $SENAITE_INSTANCE_HOME \
   && pip install -r requirements.txt \
-  && buildout -c develop.cfg \
+  && buildout \
   && ln -s $SENAITE_FILESTORAGE/ var/filestorage \
   && ln -s $SENAITE_BLOBSTORAGE/ var/blobstorage \
   && chown -R senaite:senaite $SENAITE_HOME $SENAITE_DATA \
   # Cleanup
-  && apt-get purge -y --auto-remove $(grep -vE "^\s*#" /build_deps.txt  | tr "\n" " ") 
-
-RUN  apt-get install -y --no-install-recommends $(grep -vE "^\s*#" /run_deps.txt | tr "\n" " ")
+  && apt-get purge -y --auto-remove $(grep -vE "^\s*#" /build_deps.txt  | tr "\n" " ") \
+  && rm -rf /$SENAITE_HOME/buildout-cache \
+  && rm -rf /var/lib/apt/lists/*
 
 # Change working directory
 WORKDIR $SENAITE_INSTANCE_HOME
