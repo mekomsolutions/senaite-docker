@@ -54,7 +54,7 @@ RUN apt-get update \
 # Buildout
 RUN cd $SENAITE_INSTANCE_HOME \
   && pip install -r requirements.txt \
-  && buildout \
+  && buildout -c develop.cfg \
   && ln -s $SENAITE_FILESTORAGE/ var/filestorage \
   && ln -s $SENAITE_BLOBSTORAGE/ var/blobstorage \
   && chown -R senaite:senaite $SENAITE_HOME $SENAITE_DATA \
