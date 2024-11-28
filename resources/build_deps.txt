@@ -1,5 +1,8 @@
 dpkg-dev
 gcc
+g++
+libpq-dev
+python-dev
 libbz2-dev
 libc6-dev
 libffi-dev
