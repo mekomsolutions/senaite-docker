@@ -1,8 +1,8 @@
 # SENAITE Docker
 <p align="left">
-  <img src="senaite-without-sso/readme/senaite_logo.png" width="200" title="SENAITE">
-  <img src="senaite-without-sso/readme/plus.png" width="50" title="Docker">
-  <img src="senaite-without-sso/readme/docker_logo.png" width="100" title="Docker">
+  <img src="readme/senaite_logo.png" width="200" title="SENAITE">
+  <img src="readme/plus.png" width="50" title="Docker">
+  <img src="readme/docker_logo.png" width="100" title="Docker">
 </p>
 
 Resources to build custom Docker image for SENAITE

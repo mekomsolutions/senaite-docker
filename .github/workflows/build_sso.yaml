@@ -1,7 +1,9 @@
-name: CI
+name: CI SSO
 
 on:
   push:
+    paths:
+      - 'senaite-with-sso/**'
     branches: [ main ]
   workflow_dispatch:
 
