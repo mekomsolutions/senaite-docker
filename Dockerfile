@@ -30,7 +30,7 @@ COPY resources/requirements.txt resources/versions.cfg resources/buildout.cfg re
 #RUN chown -R senaite:senaite $SENAITE_INSTANCE_HOME $SENAITE_FILESTORAGE $SENAITE_BLOBSTORAGE
 
 # Copy the build dependencies and startup scripts
-COPY resources/build_deps.txt resources/run_deps.txt resources/docker-initialize.py resources/docker-entrypoint.sh /
+COPY resources/build_deps.txt resources/run_deps.txt /
 
 # Note: we concatenate all commands to avoid multiple layer generation and reduce the image size
 RUN apt-get update \
@@ -62,6 +62,8 @@ RUN cd $SENAITE_INSTANCE_HOME \
   && apt-get purge -y --auto-remove $(grep -vE "^\s*#" /build_deps.txt  | tr "\n" " ") \
   && rm -rf /$SENAITE_HOME/buildout-cache \
   && rm -rf /var/lib/apt/lists/*
+
+COPY resources/docker-initialize.py resources/docker-entrypoint.sh /
 
 # Change working directory
 WORKDIR $SENAITE_INSTANCE_HOME
