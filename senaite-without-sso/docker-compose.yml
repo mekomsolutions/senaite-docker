@@ -2,7 +2,7 @@ version: '3'
 services:
   senaite:
       build:
-        context: ./
+        context: ..
       image: mekomsolutions/senaite:latest
       environment:
         - SITE=senaite

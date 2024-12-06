@@ -2,6 +2,8 @@ name: CI
 
 on:
   push:
+    paths:
+      - 'senaite-without-sso/**'
     branches: [main]
   release:
     types: [published]
