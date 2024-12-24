@@ -2,48 +2,21 @@ name: CI SSO
 
 on:
   push:
-    paths:
-      - 'senaite-with-sso/**'
-    branches: [ main ]
-  workflow_dispatch:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  release:
+    types: [published]
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      -
-        name: Checkout
-        uses: actions/checkout@v2
-      -
-        name: Set up QEMU
-        uses: docker/setup-qemu-action@v1
-      -
-        name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
-      -
-        name: Login to DockerHub
-        if: github.ref == 'refs/heads/main'
-        uses: docker/login-action@v2
-        with:
-          username: mekomsolutions
-          password: ${{ secrets.DOCKER_HUB_REGISTRY_PASSWORD }}
-      -
-        name: Docker meta
-        id: meta
-        uses: docker/metadata-action@v4
-        
-        with:
-          images: |
-            mekomsolutions/senaite-ozonepro
-          tags: |
-            type=raw,value=latest,enable={{is_default_branch}}
-            type=pep440,pattern={{version}}
-            type=pep440,pattern={{major}}.{{minor}}
-            type=sha
-      -
-        name: Build and push
-        uses: docker/build-push-action@v2
-        with:
-          platforms: linux/amd64,linux/arm64
-          push: true
-          tags: ${{ steps.meta.outputs.tags }}
+  build-publish:
+    uses: mekomsolutions/shared-github-workflow/.github/workflows/docker-build-publish.yml@main
+    with:
+      context: senaite-with-sso/
+      download-artifacts: false
+      dockerfile: senaite-with-sso/Dockerfile
+      image-name: "senaite-sso"
+      image-version: "dev"
+    secrets:
+      DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_REGISTRY_USERNAME }}
+      DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_REGISTRY_PASSWORD }}

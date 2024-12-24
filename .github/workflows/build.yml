@@ -2,17 +2,19 @@ name: CI
 
 on:
   push:
-    paths:
-      - 'senaite-without-sso/**'
+    branches: [main]
+  pull_request:
     branches: [main]
   release:
     types: [published]
 
 jobs:
-  docker-release:
+  build-publish:
     uses: mekomsolutions/shared-github-workflow/.github/workflows/docker-build-publish.yml@main
     with:
+      context: senaite-without-sso/
       download-artifacts: false
+      dockerfile: senaite-without-sso/Dockerfile
       image-name: "senaite"
       image-version: "dev"
     secrets:
