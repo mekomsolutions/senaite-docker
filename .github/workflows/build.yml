@@ -13,7 +13,6 @@ jobs:
     uses: mekomsolutions/shared-github-workflow/.github/workflows/docker-build-publish.yml@main
     with:
       context: senaite-without-sso/
-      download-artifacts: false
       image-name: "senaite"
       image-version: "dev"
     secrets:
@@ -23,7 +22,6 @@ jobs:
     uses: mekomsolutions/shared-github-workflow/.github/workflows/docker-build-publish.yml@main
     with:
       context: senaite-with-sso/
-      download-artifacts: false
       image-name: "senaite-sso"
       image-version: "dev"
     secrets:
