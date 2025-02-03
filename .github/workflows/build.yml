@@ -14,7 +14,7 @@ jobs:
     with:
       context: senaite/
       image-name: "senaite"
-      image-version: "dev"
+      image-version: "2.5.0-1.0.0"
     secrets:
       DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_REGISTRY_USERNAME }}
       DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_REGISTRY_PASSWORD }}
@@ -23,7 +23,7 @@ jobs:
     with:
       context: senaite-sso/
       image-name: "senaite-sso"
-      image-version: "dev"
+      image-version: "2.5.0-1.0.0"
     secrets:
       DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_REGISTRY_USERNAME }}
       DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_REGISTRY_PASSWORD }}
