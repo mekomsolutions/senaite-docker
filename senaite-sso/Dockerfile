@@ -6,13 +6,19 @@ COPY requirements.txt buildout.cfg develop.cfg $SENAITE_INSTANCE_HOME/
 # Copy the build dependencies and startup scripts
 COPY build_deps.txt run_deps.txt  /
 
-# Install moreutils and gettext
-RUN apt-get update \
+# Debian Buster repositories have moved to the archive.
+# Archived Release files can be expired; package signature checks remain enabled.
+RUN sed -i \
+        -e 's|deb.debian.org/debian|archive.debian.org/debian|g' \
+        -e 's|security.debian.org/debian-security|archive.debian.org/debian-security|g' \
+        /etc/apt/sources.list \
+    && apt-get -o Acquire::Check-Valid-Until=false update \
+    # Install moreutils and gettext
     && apt-get install -y --no-install-recommends moreutils gettext \
     && rm -rf /var/lib/apt/lists/*
 
 # Note: we concatenate all commands to avoid multiple layer generation and reduce the image size
-RUN apt-get update \
+RUN apt-get -o Acquire::Check-Valid-Until=false update \
     # Install system packages
     && apt-get install -y --no-install-recommends $(grep -vE "^\s*#" /build_deps.txt | tr "\n" " ") \
     && apt-get install -y --no-install-recommends $(grep -vE "^\s*#" /run_deps.txt | tr "\n" " ") \
