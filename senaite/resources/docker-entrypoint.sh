@@ -28,8 +28,15 @@ function git_fixture {
 # https://github.com/senaite/senaite.docker/issues/17
 git_fixture
 
-if [ -e "custom.cfg" ]; then
+# Opt-in: skip re-running buildout when custom.cfg is unchanged since the last
+# successful run (note: plonesite profiles are then not re-applied on restart)
+BUILDOUT_STAMP=".custom.cfg.sha256"
+if [ -e "custom.cfg" ] && [[ "${BUILDOUT_SKIP_IF_UNCHANGED,,}" == "true" ]] \
+  && sha256sum --status -c "$BUILDOUT_STAMP" 2>/dev/null; then
+  echo "custom.cfg unchanged, skipping buildout"
+elif [ -e "custom.cfg" ]; then
     buildout -c custom.cfg
+    sha256sum custom.cfg > "$BUILDOUT_STAMP"
     find /data  -not -user senaite -exec chown senaite:senaite {} \+
     find /home/senaite -not -user senaite -exec chown senaite:senaite {} \+
     gosu senaite python /docker-initialize.py
