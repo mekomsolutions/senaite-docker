@@ -25,7 +25,7 @@ RUN useradd --system -m -d $SENAITE_HOME -U -u 500 $SENAITE_USER
 RUN mkdir -p $SENAITE_INSTANCE_HOME $SENAITE_FILESTORAGE $SENAITE_BLOBSTORAGE
 
 # Copy Buildout
-COPY resources/requirements.txt resources/versions.cfg resources/buildout.cfg resources/develop.cfg $SENAITE_INSTANCE_HOME/
+COPY resources/requirements.txt resources/versions.cfg resources/known-good-versions.cfg resources/buildout.cfg resources/develop.cfg $SENAITE_INSTANCE_HOME/
 
 #RUN chown -R senaite:senaite $SENAITE_INSTANCE_HOME $SENAITE_FILESTORAGE $SENAITE_BLOBSTORAGE
 

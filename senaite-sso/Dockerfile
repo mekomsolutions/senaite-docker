@@ -1,6 +1,7 @@
 FROM mekomsolutions/senaite
 
 # Copy Buildout
+# known-good-versions.cfg comes from the base image
 COPY requirements.txt buildout.cfg develop.cfg $SENAITE_INSTANCE_HOME/
 
 # Copy the build dependencies and startup scripts
