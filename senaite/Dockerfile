@@ -46,7 +46,7 @@ RUN apt-get update \
   && apt-get install -y --no-install-recommends $(grep -vE "^\s*#" /build_deps.txt | tr "\n" " ") \
   && apt-get install -y --no-install-recommends $(grep -vE "^\s*#" /run_deps.txt | tr "\n" " ") \
   # Fetch unified installer
-  && wget --tries=5 --retry-connrefused --waitretry=10 --timeout=60 -O Plone.tgzhttps://launchpad.net/plone/$PLONE_MAJOR/$PLONE_VERSION/+download/$PLONE_UNIFIED_INSTALLER.tgz \
+  && wget --tries=5 --retry-connrefused --waitretry=10 --timeout=60 -O Plone.tgz https://launchpad.net/plone/$PLONE_MAJOR/$PLONE_VERSION/+download/$PLONE_UNIFIED_INSTALLER.tgz \
   && echo "$PLONE_MD5 Plone.tgz" | md5sum -c - \
   && tar -xzf /Plone.tgz \
   && cp -rv $PLONE_UNIFIED_INSTALLER/base_skeleton/* $SENAITE_INSTANCE_HOME \
