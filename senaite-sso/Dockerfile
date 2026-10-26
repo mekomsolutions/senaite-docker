@@ -6,6 +6,15 @@ COPY requirements.txt buildout.cfg develop.cfg $SENAITE_INSTANCE_HOME/
 # Copy the build dependencies and startup scripts
 COPY build_deps.txt run_deps.txt  /
 
+# Debian buster is EOL: its repositories moved to archive.debian.org
+# (repeated here in case the base image predates this fix)
+RUN sed -i \
+    -e 's|deb.debian.org/debian|archive.debian.org/debian|g' \
+    -e 's|security.debian.org/debian-security|archive.debian.org/debian-security|g' \
+    -e '/buster-updates/d' \
+    /etc/apt/sources.list \
+  && echo 'Acquire::Check-Valid-Until "false";' > /etc/apt/apt.conf.d/99archive
+
 # Install moreutils and gettext
 RUN apt-get update \
     && apt-get install -y --no-install-recommends moreutils gettext \
