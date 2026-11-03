@@ -25,12 +25,20 @@ RUN useradd --system -m -d $SENAITE_HOME -U -u 500 $SENAITE_USER
 RUN mkdir -p $SENAITE_INSTANCE_HOME $SENAITE_FILESTORAGE $SENAITE_BLOBSTORAGE
 
 # Copy Buildout
-COPY resources/requirements.txt resources/versions.cfg resources/buildout.cfg resources/develop.cfg $SENAITE_INSTANCE_HOME/
+COPY resources/requirements.txt resources/versions.cfg resources/known-good-versions.cfg resources/buildout.cfg resources/develop.cfg $SENAITE_INSTANCE_HOME/
 
 #RUN chown -R senaite:senaite $SENAITE_INSTANCE_HOME $SENAITE_FILESTORAGE $SENAITE_BLOBSTORAGE
 
 # Copy the build dependencies and startup scripts
 COPY resources/build_deps.txt resources/run_deps.txt /
+
+# Debian buster is EOL: its repositories moved to archive.debian.org
+RUN sed -i \
+    -e 's|deb.debian.org/debian|archive.debian.org/debian|g' \
+    -e 's|security.debian.org/debian-security|archive.debian.org/debian-security|g' \
+    -e '/buster-updates/d' \
+    /etc/apt/sources.list \
+  && echo 'Acquire::Check-Valid-Until "false";' > /etc/apt/apt.conf.d/99archive
 
 # Note: we concatenate all commands to avoid multiple layer generation and reduce the image size
 RUN apt-get update \
@@ -38,7 +46,7 @@ RUN apt-get update \
   && apt-get install -y --no-install-recommends $(grep -vE "^\s*#" /build_deps.txt | tr "\n" " ") \
   && apt-get install -y --no-install-recommends $(grep -vE "^\s*#" /run_deps.txt | tr "\n" " ") \
   # Fetch unified installer
-  && wget -O Plone.tgz https://launchpad.net/plone/$PLONE_MAJOR/$PLONE_VERSION/+download/$PLONE_UNIFIED_INSTALLER.tgz \
+  && wget --tries=5 --retry-connrefused --waitretry=10 --timeout=60 -O Plone.tgz https://launchpad.net/plone/$PLONE_MAJOR/$PLONE_VERSION/+download/$PLONE_UNIFIED_INSTALLER.tgz \
   && echo "$PLONE_MD5 Plone.tgz" | md5sum -c - \
   && tar -xzf /Plone.tgz \
   && cp -rv $PLONE_UNIFIED_INSTALLER/base_skeleton/* $SENAITE_INSTANCE_HOME \

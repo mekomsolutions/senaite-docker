@@ -13,7 +13,8 @@ class Environment(object):
         custom_conf="/home/senaite/senaitelims/custom.cfg",
         zeopack_conf="/home/senaite/senaitelims/bin/zeopack",
         zeoserver_conf="/home/senaite/senaitelims/parts/zeoserver/etc/zeo.conf",
-        cors_conf="/home/senaite/senaitelims/parts/instance/etc/package-includes/999-additional-overrides.zcml"
+        cors_conf="/home/senaite/senaitelims/parts/instance/etc/package-includes/999-additional-overrides.zcml",
+        wsgi_conf="/home/senaite/senaitelims/parts/instance/etc/wsgi.ini"
     ):
         self.env = env
         self.zope_conf = zope_conf
@@ -21,6 +22,7 @@ class Environment(object):
         self.zeopack_conf = zeopack_conf
         self.zeoserver_conf = zeoserver_conf
         self.cors_conf = cors_conf
+        self.wsgi_conf = wsgi_conf
 
     def zeoclient(self):
         """ ZEO Client
@@ -93,6 +95,27 @@ class Environment(object):
 
             with open(self.zeoserver_conf, 'w') as cfile:
                 cfile.write(text)
+
+    def performance(self):
+        """ Zope performance tuning (only applied when the variables are set)
+        """
+        zodb_cache_size = self.env.get("ZODB_CACHE_SIZE", "").strip()
+        if zodb_cache_size and os.path.exists(self.zope_conf):
+            with open(self.zope_conf, "r") as cfile:
+                config = cfile.read()
+            pattern = re.compile(r"(<zodb_db main>.*?cache-size\s+)\d+", re.DOTALL)
+            config = re.sub(pattern, r"\g<1>%s" % zodb_cache_size, config, count=1)
+            with open(self.zope_conf, "w") as cfile:
+                cfile.write(config)
+
+        wsgi_threads = self.env.get("WSGI_THREADS", "").strip()
+        if wsgi_threads and os.path.exists(self.wsgi_conf):
+            with open(self.wsgi_conf, "r") as cfile:
+                config = cfile.read()
+            pattern = re.compile(r"^threads\s*=\s*\d+", re.MULTILINE)
+            config = re.sub(pattern, "threads = %s" % wsgi_threads, config, count=1)
+            with open(self.wsgi_conf, "w") as cfile:
+                cfile.write(config)
 
     def cors(self):
         """ Configure CORS Policies
@@ -285,6 +308,7 @@ class Environment(object):
         self.zeoclient()
         self.zeopack()
         self.zeoserver()
+        self.performance()
 
     __call__ = setup
 

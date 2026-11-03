@@ -19,6 +19,8 @@ jobs:
       DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_REGISTRY_USERNAME }}
       DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_REGISTRY_PASSWORD }}
   build-publish-sso:
+    # senaite-sso is built FROM the base image, so wait for it to be published
+    needs: build-publish
     uses: mekomsolutions/shared-github-workflow/.github/workflows/docker-build-publish.yml@main
     with:
       context: senaite-sso/
