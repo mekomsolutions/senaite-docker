@@ -11,6 +11,7 @@ ENV PLONE_MAJOR=5.2 \
   PLONE_VERSION=5.2.14 \
   PLONE_MD5=e8e1f774f069026319be3038631e0734 \
   PLONE_UNIFIED_INSTALLER=Plone-5.2.14-UnifiedInstaller-1.0 \
+  SENAITE_SKIP_PDF=false \
   SENAITE_HOME=/home/senaite \
   SENAITE_USER=senaite \
   SENAITE_INSTANCE_HOME=/home/senaite/senaitelims \
@@ -57,7 +58,9 @@ RUN apt-get update \
   && git clone  https://github.com/mekomsolutions/senaite.indexer.git $SENAITE_INSTANCE_HOME/src/senaite.indexer \
   && cd $SENAITE_INSTANCE_HOME/src/senaite.indexer && git checkout main \
   && git clone  https://github.com/mekomsolutions/senaite.monkeypatches.git $SENAITE_INSTANCE_HOME/src/senaite.monkeypatches\
-  && cd $SENAITE_INSTANCE_HOME/src/senaite.monkeypatches && git checkout main
+  && cd $SENAITE_INSTANCE_HOME/src/senaite.monkeypatches && git checkout main \
+  && git clone https://github.com/mekomsolutions/senaite.skippdf.git $SENAITE_INSTANCE_HOME/src/senaite.skippdf\
+  && cd $SENAITE_INSTANCE_HOME/src/senaite.skippdf && git checkout main
 
 # Buildout
 RUN cd $SENAITE_INSTANCE_HOME \

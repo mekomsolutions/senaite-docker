@@ -24,6 +24,7 @@ Additionally, the image will accept the following environment variable when run:
 |--------------------------------|---------|:--------------------------------------------------------------------------------:|
 | `ADMIN_USER`                       |         | Name of the administrator user   
 | `ADMIN_PASSWORD`                      |  | Password of the administrator  user name                        
+| `SENAITE_SKIP_PDF` | `false` | Runtime flag for `senaite.skippdf`: `true` skips PDF generation; `false` keeps normal behavior |
 | `SITE` |         | The 'site' name, eg, 'clinic1' |
 | `ZODB_CACHE_SIZE` | `30000` | Number of objects kept in the ZODB cache per connection. Raising it (e.g. `100000`–`300000`) speeds up large SENAITE sites at the cost of RAM |
 | `WSGI_THREADS` | `4` | Number of WSGI worker threads per instance (each thread holds its own ZODB cache) |

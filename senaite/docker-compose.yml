@@ -5,6 +5,7 @@ services:
         context: ..
       image: mekomsolutions/senaite:latest
       environment:
+        - SENAITE_SKIP_PDF=${SENAITE_SKIP_PDF:-false}
         - SITE=senaite
         - ADMIN_USER=admin
         - ADMIN_PASSWORD=password
