@@ -60,7 +60,7 @@ RUN apt-get update \
   && git clone  https://github.com/mekomsolutions/senaite.monkeypatches.git $SENAITE_INSTANCE_HOME/src/senaite.monkeypatches\
   && cd $SENAITE_INSTANCE_HOME/src/senaite.monkeypatches && git checkout main \
   && git clone https://github.com/mekomsolutions/senaite.skippdf.git $SENAITE_INSTANCE_HOME/src/senaite.skippdf\
-  && cd $SENAITE_INSTANCE_HOME/src/senaite.skippdf && git checkout add-on
+  && cd $SENAITE_INSTANCE_HOME/src/senaite.skippdf && git checkout main
 
 # Buildout
 RUN cd $SENAITE_INSTANCE_HOME \
